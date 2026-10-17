@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>བྲིས་ཡིག チベット書道練習帳</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Tibetan:wght@400;700&family=Zen+Old+Mincho:wght@500;700&display=swap">
+<style>
+:root{--bg:#EDE7DC;--panel:#F7F3EA;--text:#241B17;--muted:#6B5D52;--line:#CFC4B3;--accent:#8C2A33;--gold:#C98A1B;--board:#1C1714;--ink:#F3E6C4;--guide:rgba(243,230,196,.2);
+--sans:"Zen Old Mincho","Hiragino Mincho ProN","Yu Mincho",serif;--tib:"Noto Serif Tibetan","Jomolhari","Tibetan Machine Uni","Microsoft Himalaya",serif;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14100E;--panel:#211A17;--text:#EFE5D3;--muted:#A89987;--line:#3A2F29;--accent:#D86A72}}
+:root[data-theme="dark"]{--bg:#14100E;--panel:#211A17;--text:#EFE5D3;--muted:#A89987;--line:#3A2F29;--accent:#D86A72}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.7}
+.wrap{max-width:1000px;margin:0 auto;padding:20px 16px 40px}
+header{display:flex;align-items:baseline;gap:14px;flex-wrap:wrap;margin-bottom:16px}
+h1{margin:0;font-size:1.5rem;font-weight:700}
+h1 span{font-family:var(--tib);color:var(--accent);margin-right:10px;font-size:1.7rem}
+header p{margin:0;color:var(--muted);font-size:.9rem}
+.layout{display:grid;grid-template-columns:260px 1fr;gap:16px}
+@media(max-width:760px){.layout{grid-template-columns:1fr}}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:12px}
+.tabs{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap}
+.tabs button,.tools button,.tools select{font:inherit;font-size:.9rem;color:var(--text);background:transparent;border:1px solid var(--line);border-radius:6px;padding:5px 11px;cursor:pointer}
+.tabs button[aria-pressed="true"],.tools button[aria-pressed="true"]{background:var(--accent);color:#fff;border-color:var(--accent)}
+button:focus-visible,select:focus-visible,input:focus-visible,canvas:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.grid{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;max-height:420px;overflow-y:auto}
+@media(max-width:760px){.grid{grid-template-columns:repeat(6,1fr);max-height:190px}}
+.cell{font-family:var(--tib);font-size:1.6rem;line-height:1.5;text-align:center;padding:2px 0;border:1px solid var(--line);border-radius:6px;background:transparent;color:var(--text);cursor:pointer}
+.cell[aria-pressed="true"]{background:var(--board);color:var(--ink);border-color:var(--gold)}
+.cell.word{grid-column:span 5;font-size:1.3rem;text-align:left;padding:4px 10px}
+@media(max-width:760px){.cell.word{grid-column:span 6}}
+.stage-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:8px}
+.cur{font-family:var(--tib);font-size:2rem;line-height:1.4;color:var(--accent)}
+.rom{color:var(--muted);font-size:.95rem}
+.board{position:relative;background:var(--board);border-radius:8px;border:6px solid #3B2A20;aspect-ratio:4/3;touch-action:none;overflow:hidden}
+.board.paper{background:#F4F4EF;border-color:#B9A98F}
+.board canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.tools{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-top:10px}
+.tools label{display:flex;align-items:center;gap:6px;font-size:.9rem;color:var(--muted)}
+.tools input[type=range]{width:110px;accent-color:var(--accent)}
+.tools .sp{flex:1}
+.hint{margin:10px 0 0;color:var(--muted);font-size:.85rem}
+.read h2{margin:0 0 4px;font-size:1.2rem}
+.read p{margin:4px 0}
+.legend,.parts{display:flex;flex-wrap:wrap;gap:6px;margin:8px 0}
+.chip{display:inline-flex;align-items:center;gap:6px;border-radius:6px;padding:1px 9px 1px 7px;font-size:.82rem;border:1px solid var(--line);border-left:5px solid var(--c)}
+.chip b{font-family:var(--tib);font-size:1.35rem;font-weight:400;line-height:1.5}
+.r-pre{--c:#5F78A8}.r-sup{--c:#3F9473}.r-root{--c:#B3343F}.r-sub{--c:#C08A16}.r-vow{--c:#8559B5}.r-suf{--c:#2A82A0}.r-suf2{--c:#808890}
+.syls{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
+.syl{flex:1 1 230px;border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:var(--bg)}
+.syl .big{font-family:var(--tib);font-size:2.4rem;line-height:1.5}
+.syl .rd{font-weight:700}
+.syl .nt{color:var(--muted);font-size:.9rem}
+.read{margin-top:16px}
+.read details{border-top:1px solid var(--line);padding:8px 0}
+.read summary{cursor:pointer;font-weight:700}
+.read details p,.read details li{font-size:.95rem}
+#lang{font:inherit;font-size:.9rem;color:var(--text);background:var(--panel);border:1px solid var(--line);border-radius:6px;padding:4px 8px;margin-left:auto}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+<h1><span>བྲིས་ཡིག</span>チベット書道練習帳</h1>
+<p></p>
+<select id="lang" aria-label="Language"></select>
+</header>
+<div class="layout">
+<section class="panel" aria-label="文字を選ぶ">
+<div class="tabs" role="group" aria-label="種類">
+<button data-set="cons" aria-pressed="true">子音</button>
+<button data-set="vow" aria-pressed="false">母音</button>
+<button data-set="stack" aria-pressed="false">重ね字</button>
+<button data-set="skt" aria-pressed="false">梵字</button>
+<button data-set="num" aria-pressed="false">数字</button>
+<button data-set="word" aria-pressed="false">言葉</button>
+</div>
+<div class="grid" id="grid"></div>
+</section>
+<section class="panel" aria-label="練習ボード">
+<div class="stage-head"><div class="cur" id="cur">ཀ</div><div class="rom" id="rom">ka</div></div>
+<div class="board" id="board">
+<canvas id="guide"></canvas>
+<canvas id="draw" tabindex="0" aria-label="書き込み領域"></canvas>
+</div>
+<div class="tools">
+<button id="undo">一つ戻す</button>
+<button id="clear">全部消す</button>
+<button id="toggleGuide" aria-pressed="true">お手本</button>
+<button id="toggleLine" aria-pressed="true">頭線</button>
+<button id="toggleSurface" aria-pressed="false">紙に切り替え</button>
+<span class="sp"></span>
+<label>筆の太さ <input type="range" id="size" min="4" max="26" value="12"></label>
+</div>
+<p class="hint">チベット文字は、文字の上にある横線(頭線)から字が下がるように書きます。上の線に合わせて書いてみてください。</p>
+</section>
+</div>
+<section class="panel read" id="read" aria-label="読み方">
+<h2>読み方のしくみ</h2>
+<p id="readLead"></p>
+<div class="legend" id="legend"></div>
+<div class="syls" id="syls"></div>
+<div id="rules"></div>
+</section>
+</div>
+<script>
+const SETS={
+cons:[["ཀ","ka"],["ཁ","kha"],["ག","ga"],["ང","nga"],["ཅ","ca"],["ཆ","cha"],["ཇ","ja"],["ཉ","nya"],["ཏ","ta"],["ཐ","tha"],["ད","da"],["ན","na"],["པ","pa"],["ཕ","pha"],["བ","ba"],["མ","ma"],["ཙ","tsa"],["ཚ","tsha"],["ཛ","dza"],["ཝ","wa"],["ཞ","zha"],["ཟ","za"],["འ","’a"],["ཡ","ya"],["ར","ra"],["ལ","la"],["ཤ","sha"],["ས","sa"],["ཧ","ha"],["ཨ","a"]],
+vow:[["ཨི","i(イ)"],["ཨུ","u(ウ)"],["ཨེ","e(エ)"],["ཨོ","o(オ)"],["ཀི","ki"],["ཀུ","ku"],["ཀེ","ke"],["ཀོ","ko"],["མི","mi"],["མུ","mu"],["མེ","me"],["མོ","mo"]],
+word:[["བཀྲ་ཤིས།","tashi(吉祥)"],["བཀྲ་ཤིས་བདེ་ལེགས།","tashi delek(こんにちは)"],["ཐུགས་རྗེ་ཆེ།","thuk-je-che(ありがとう)"],["བོད།","bö(チベット)"],["ཨོཾ་མ་ཎི་པདྨེ་ཧཱུྃ།","om mani padme hum"],["བདེ་སྐྱིད།","dekyi(幸せ)"],["སྙིང་རྗེ།","nyingje(慈悲)"]]
+};
+const $=id=>document.getElementById(id);
+const I18N={
+ja:{t:"チベット書道練習帳",s:"薄いお手本をなぞり、下の空白にも書いてみましょう。",c:"子音",v:"母音",k:"重ね字",x:"梵字",n:"数字",w:"言葉",u:"一つ戻す",cl:"全部消す",g:"お手本",l:"頭線",p:"紙に切り替え",b:"黒板に切り替え",z:"筆の太さ",h:"チベット文字は、頭線(上の横線)から字が下がるように書きます。",rt:"読み方のしくみ",l1:"この言葉は{n}つの音節です。点(་)で区切って一音節ずつ読みます。",l2:"一つの音節を色分けで分解しています。読む字と読まない字を確認しましょう。",un:"この音節の解析はまだありません。",rd:"読み",wy:"ワイリー式",
+ro:["前置字","上置字","基字","下置字","母音","後置字","再後置字"],
+ph:["発音しない","音の中心","基字の音を変える","母音記号「{v}」","語末の「{x}」音で読む","発音しないが、前の母音を変える","母音記号がないので「a」と読む","息を強く出す有気音","ラサ方言ではそり舌の「ta」に近い"],
+ru:[["音節と点","音節は点「་」で区切り、文末は「།」で終えます。点から点までが一音節です。"],["音節のしくみ","基字+母音で読みます(母音記号がなければa)。前置字・上置字・再後置字は読みません。下置字は基字の音を変えます。後置字は k・ng・p・m・n は読み、ད・ལ・ས・ར は読まず前の母音を変えます。"],["例: བོད་","བ(基字)+ོ(母音o)+ད(後置字)の3つで一音節。བོ=「po」、ད は読まず、o を ö に変えて「pö」。つづりは古い発音を残していて、読みはラサ方言が目安です。"]],
+gl:["チベット","チベットの地","吉祥","こんにちは","ありがとう","真言","幸せ","慈悲","水","太陽","ラマ・師"]},
+en:{t:"Tibetan Calligraphy Practice",s:"Trace the faint model letter, then write in the open space.",c:"Consonants",v:"Vowels",k:"Stacks",x:"Sanskrit",n:"Numbers",w:"Words",u:"Undo",cl:"Clear",g:"Model",l:"Head line",p:"Switch to paper",b:"Switch to board",z:"Brush size",h:"Tibetan letters hang from the head line, the horizontal line at the top.",rt:"How to read",l1:"This word has {n} syllables. A dot (་) separates them; read one at a time.",l2:"One syllable, split by color. See which letters are read and which are silent.",un:"No analysis for this syllable yet.",rd:"Reading",wy:"Wylie",
+ro:["Prefix","Superscript","Root","Subscript","Vowel","Suffix","Second suffix"],
+ph:["not pronounced","core of the sound","changes the root’s sound","vowel sign “{v}”","read as a final “{x}”","silent, but changes the vowel before it","no vowel sign, so read with “a”","aspirated (breathy)","close to a retroflex “ta” in Lhasa"],
+ru:[["Syllables and the dot","A dot (་) separates syllables and a bar (།) ends a sentence. Each stretch between dots is one syllable."],["Inside a syllable","Read root + vowel (no sign = a). Prefix, superscript and second suffix are silent; a subscript changes the root’s sound. Of the suffixes, k, ng, p, m, n are read; d, l, s, r are silent but alter the vowel."],["Example: བོད་","བ (root) + ོ (vowel o) + ད (suffix) form one syllable. བོ = “po”; ད is silent but turns o into ö, giving “pö”. Spelling keeps an older pronunciation; readings here follow Lhasa Tibetan."]],
+gl:["Tibet","Land of Tibet","auspicious","hello","thank you","mantra","happiness","compassion","water","sun","lama (teacher)"]},
+es:{t:"Práctica de caligrafía tibetana",s:"Calca la letra modelo tenue y luego escribe en el espacio libre.",c:"Consonantes",v:"Vocales",k:"Apiladas",x:"Sánscrito",n:"Números",w:"Palabras",u:"Deshacer",cl:"Borrar",g:"Modelo",l:"Línea superior",p:"Cambiar a papel",b:"Cambiar a pizarra",z:"Grosor",h:"Las letras tibetanas cuelgan de la línea superior, la horizontal de arriba.",rt:"Cómo se lee",l1:"Esta palabra tiene {n} sílabas. Un punto (་) las separa; léelas una a una.",l2:"Una sílaba separada por colores. Mira qué letras se leen y cuáles son mudas.",un:"Aún no hay análisis de esta sílaba.",rd:"Lectura",wy:"Wylie",
+ro:["Prefijo","Suprascrita","Raíz","Subscrita","Vocal","Sufijo","Segundo sufijo"],
+ph:["no se pronuncia","núcleo del sonido","cambia el sonido de la raíz","signo vocálico «{v}»","se lee como «{x}» final","muda, pero cambia la vocal anterior","sin signo vocálico: se lee con «a»","aspirada (con soplo)","cercana a una «ta» retrofleja en Lhasa"],
+ru:[["Sílabas y punto","Un punto (་) separa las sílabas y una barra (།) cierra la frase. Lo que hay entre dos puntos es una sílaba."],["Dentro de la sílaba","Se lee raíz + vocal (sin signo = a). Prefijo, suprascrita y segundo sufijo son mudos; la subscrita cambia el sonido de la raíz. De los sufijos se leen k, ng, p, m, n; d, l, s, r son mudos pero alteran la vocal."],["Ejemplo: བོད་","བ (raíz) + ོ (vocal o) + ད (sufijo) forman una sílaba. བོ = «po»; ད es muda pero convierte la o en ö: «pö». La ortografía conserva una pronunciación antigua; la lectura sigue el tibetano de Lhasa."]],
+gl:["Tíbet","Tierra del Tíbet","auspicioso","hola","gracias","mantra","felicidad","compasión","agua","sol","lama (maestro)"]},
+fr:{t:"Pratique de la calligraphie tibétaine",s:"Calquez la lettre modèle pâle, puis écrivez dans l’espace libre.",c:"Consonnes",v:"Voyelles",k:"Empilées",x:"Sanskrit",n:"Chiffres",w:"Mots",u:"Annuler",cl:"Effacer",g:"Modèle",l:"Ligne de tête",p:"Passer au papier",b:"Passer au tableau",z:"Épaisseur",h:"Les lettres tibétaines pendent à la ligne de tête, l’horizontale du haut.",rt:"Comment lire",l1:"Ce mot compte {n} syllabes. Un point (་) les sépare ; lisez-les une à une.",l2:"Une syllabe décomposée par couleur. Voyez quelles lettres se lisent et lesquelles sont muettes.",un:"Pas encore d’analyse pour cette syllabe.",rd:"Lecture",wy:"Wylie",
+ro:["Préfixe","Suscrite","Racine","Souscrite","Voyelle","Suffixe","Second suffixe"],
+ph:["non prononcé","cœur du son","change le son de la racine","signe vocalique « {v} »","lu comme « {x} » final","muet, mais modifie la voyelle précédente","pas de signe vocalique : on lit « a »","aspirée (soufflée)","proche d’un « ta » rétroflexe à Lhassa"],
+ru:[["Syllabes et point","Un point (་) sépare les syllabes et une barre (།) termine la phrase. Entre deux points, il y a une syllabe."],["Dans la syllabe","On lit racine + voyelle (sans signe = a). Préfixe, suscrite et second suffixe sont muets ; la souscrite change le son de la racine. Parmi les suffixes, k, ng, p, m, n se lisent ; d, l, s, r sont muets mais modifient la voyelle."],["Exemple : བོད་","བ (racine) + ོ (voyelle o) + ད (suffixe) forment une syllabe. བོ = « po » ; ད est muet mais change o en ö : « pö ». L’orthographe garde une prononciation ancienne ; la lecture suit le tibétain de Lhassa."]],
+gl:["Tibet","Pays du Tibet","de bon augure","bonjour","merci","mantra","bonheur","compassion","eau","soleil","lama (maître)"]},
+de:{t:"Tibetische Kalligrafie üben",s:"Fahre den blassen Musterbuchstaben nach und schreibe dann in die freie Fläche.",c:"Konsonanten",v:"Vokale",k:"Stapel",x:"Sanskrit",n:"Zahlen",w:"Wörter",u:"Rückgängig",cl:"Löschen",g:"Vorlage",l:"Kopflinie",p:"Zu Papier wechseln",b:"Zur Tafel wechseln",z:"Pinselstärke",h:"Tibetische Buchstaben hängen an der Kopflinie, der waagerechten Linie oben.",rt:"So liest man",l1:"Dieses Wort hat {n} Silben. Ein Punkt (་) trennt sie; lies sie nacheinander.",l2:"Eine Silbe, farbig zerlegt. Sieh, welche Buchstaben gelesen werden und welche stumm sind.",un:"Für diese Silbe gibt es noch keine Analyse.",rd:"Lesung",wy:"Wylie",
+ro:["Präfix","Obergesetzte","Wurzel","Untergesetzte","Vokal","Suffix","Zweites Suffix"],
+ph:["nicht gesprochen","Kern des Lauts","verändert den Laut der Wurzel","Vokalzeichen „{v}“","als Endlaut „{x}“ gelesen","stumm, verändert aber den vorigen Vokal","kein Vokalzeichen, also „a“","behaucht (aspiriert)","nahe einem retroflexen „ta“ in Lhasa"],
+ru:[["Silben und Punkt","Ein Punkt (་) trennt Silben, ein Strich (།) beendet den Satz. Zwischen zwei Punkten steht eine Silbe."],["In der Silbe","Gelesen wird Wurzel + Vokal (ohne Zeichen = a). Präfix, Obergesetzte und zweites Suffix sind stumm; die Untergesetzte verändert den Laut der Wurzel. Von den Suffixen werden k, ng, p, m, n gesprochen; d, l, s, r sind stumm, verändern aber den Vokal."],["Beispiel: བོད་","བ (Wurzel) + ོ (Vokal o) + ད (Suffix) bilden eine Silbe. བོ = „po“; ད ist stumm, macht aber aus o ein ö: „pö“. Die Schreibung bewahrt eine ältere Aussprache; die Lesung folgt dem Tibetischen von Lhasa."]],
+gl:["Tibet","Land Tibet","glückverheißend","Hallo","danke","Mantra","Glück","Mitgefühl","Wasser","Sonne","Lama (Lehrer)"]},
+ko:{t:"티베트 서예 연습장",s:"흐린 본보기 글자를 따라 쓰고, 아래 빈 곳에도 써 보세요.",c:"자음",v:"모음",k:"겹글자",x:"범어자",n:"숫자",w:"단어",u:"되돌리기",cl:"모두 지우기",g:"본보기",l:"머리선",p:"종이로 바꾸기",b:"칠판으로 바꾸기",z:"붓 굵기",h:"티베트 문자는 맨 위의 가로선(머리선)에 매달리듯 씁니다.",rt:"읽는 방법",l1:"이 단어는 {n}개의 음절입니다. 점(་)으로 나누어 한 음절씩 읽습니다.",l2:"한 음절을 색으로 나눕니다. 읽는 글자와 읽지 않는 글자를 확인하세요.",un:"이 음절의 분석은 아직 없습니다.",rd:"읽기",wy:"와일리 표기",
+ro:["전치자","상치자","기자","하치자","모음","후치자","재후치자"],
+ph:["발음하지 않음","소리의 중심","기자의 소리를 바꿈","모음 기호 “{v}”","말미의 “{x}” 소리로 읽음","발음하지 않지만 앞 모음을 바꿈","모음 기호가 없으면 “a”로 읽음","유기음(숨을 세게 내쉼)","라싸 방언에서는 권설음 “ta”에 가까움"],
+ru:[["음절과 점","점(་)으로 음절을 나누고 문장 끝에는 (།)를 씁니다. 점과 점 사이가 한 음절입니다."],["음절의 구조","기자+모음으로 읽습니다(모음 기호가 없으면 a). 전치자·상치자·재후치자는 읽지 않고, 하치자는 기자의 소리를 바꿉니다. 후치자 중 k, ng, p, m, n은 읽고 d, l, s, r는 읽지 않지만 앞 모음을 바꿉니다."],["예: བོད་","བ(기자)+ོ(모음 o)+ད(후치자)가 한 음절입니다. བོ=“po”, ད는 읽지 않지만 o를 ö로 바꿔 “pö”가 됩니다. 철자는 옛 발음을 간직하고 있으며, 읽기는 라싸 방언을 기준으로 합니다."]],
+gl:["티베트","티베트 땅","길상","안녕하세요","감사합니다","진언","행복","자비","물","태양","라마(스승)"]},
+zh:{t:"藏文书法练习册",s:"先描摹浅色范字,再在下方空白处书写。",c:"辅音",v:"元音",k:"叠字",x:"梵文字母",n:"数字",w:"词语",u:"撤销",cl:"全部清除",g:"范字",l:"头线",p:"切换为纸张",b:"切换为黑板",z:"笔画粗细",h:"藏文字母从顶部的横线(头线)向下悬挂书写。",rt:"读法",l1:"这个词有{n}个音节。用点(་)分隔,逐个音节读。",l2:"把一个音节按颜色拆开,看哪些字母要读,哪些不读。",un:"这个音节暂无解析。",rd:"读音",wy:"威利转写",
+ro:["前加字","上加字","基字","下加字","元音","后加字","再后加字"],
+ph:["不发音","音的核心","改变基字的音","元音符号“{v}”","读作词尾的“{x}”","不发音,但会改变前面的元音","没有元音符号,读作“a”","送气音","拉萨话中接近卷舌的“ta”"],
+ru:[["音节与点","音节之间用点(་)分隔,句末用(།)。两点之间就是一个音节。"],["音节结构","读基字+元音(无符号则为a)。前加字、上加字、再后加字不读;下加字会改变基字的音。后加字中 k、ng、p、m、n 要读,d、l、s、r 不读,但会改变前面的元音。"],["例:བོད་","བ(基字)+ ོ(元音o)+ ད(后加字)组成一个音节。བོ=“po”;ད不读,但把o变成ö,读作“pö”。拼写保留了古音,这里的读法以拉萨话为准。"]],
+gl:["西藏","西藏之地","吉祥","你好","谢谢","真言","幸福","慈悲","水","太阳","喇嘛(上师)"]},
+bo:{t:"བོད་ཡིག་བྲིས་སྦྱོང་།",s:"ཡིག་གཟུགས་མཐིང་ཟད་ལ་བཞིན་བྲིས་ལ་འོག་ཏུ་བྲིས།",c:"གསལ་བྱེད།",v:"དབྱངས།",k:"བརྩེགས་ཡིག",x:"རྒྱ་གར་ཡིག",n:"གྲངས་ཀ",w:"ཚིག",u:"ཕྱིར་ལོག",cl:"གཙང་སེལ།",g:"དཔེ།",l:"མགོ་ཐིག",p:"ཤོག་བུར་བརྗེ།",b:"ལེབ་ནག་ལ་བརྗེ།",z:"མཐུག་ཚད།",h:"བོད་ཡིག་ནི་མགོ་ཐིག་ལས་འཕྱང་བར་བྲིས།",rt:"ཀློག་ཐབས།",l1:"ཚིག་འདི་ལ་ཚེག་བར་ {n} ཡོད། ཚེག་གིས་ཕྱེ་ནས་རེ་རེ་བཞིན་ཀློག",l2:"ཚེག་བར་གཅིག་ཚོན་གྱིས་ཕྱེ་བ། ཀློག་པའི་ཡིག་འབྲུ་དང་མི་ཀློག་པ་ལ་གཟིགས།",un:"ཚེག་བར་འདིའི་དབྱེ་དཔྱད་མེད།",rd:"འདོན་སྒྲ།",wy:"ཝཱ་ཡི་ལི།",
+ro:["སྔོན་འཇུག","མགོ་ཅན","མིང་གཞི","འདོགས་ཅན","དབྱངས","རྗེས་འཇུག","ཡང་འཇུག"],
+ph:["མི་འདོན།","སྒྲ་གཙོ་བོ།","མིང་གཞིའི་སྒྲ་འགྱུར།","དབྱངས་ “{v}”།","མཇུག་གི་ “{x}” ལྟར་འདོན།","མི་འདོན་ཡང་སྔོན་གྱི་དབྱངས་བསྒྱུར།","དབྱངས་མེད་ན་ “a” ལྟར་འདོན།","སྲོག་རླུང་ཆེ་བ།","ལྷ་སའི་སྐད་ཀྱི་ “ta” ལྟར།"],
+ru:[["ཚེག་དང་ཚེག་བར།","ཚེག་ (་) གིས་ཚེག་བར་ཕྱེ། ཤད་ (།) གིས་ཚིག་མཚམས་འཇོག ཚེག་གཉིས་བར་ནི་ཚེག་བར་གཅིག་རེ།"],["ཚེག་བར་གྱི་གཞི།","མིང་གཞི་དང་དབྱངས་ཀློག་ (དབྱངས་མེད་ན་ ཨ)། སྔོན་འཇུག མགོ་ཅན ཡང་འཇུག་མི་ཀློག འདོགས་ཅན་གྱིས་སྒྲ་བསྒྱུར། རྗེས་འཇུག ག ང བ མ ན ཀློག ད ལ ས ར མི་ཀློག་ཀྱང་དབྱངས་བསྒྱུར།"],["དཔེ། བོད་","བ (མིང་གཞི) + ོ (དབྱངས) + ད (རྗེས་འཇུག) ཚེག་བར་གཅིག བོ = “po” ད མི་འདོན་ཀྱང་ o ལ་ ö ཏུ་བསྒྱུར། “pö”། ཡིག་གཟུགས་རྙིང་པའི་སྒྲ་ཡིན། འདིར་ལྷ་སའི་སྐད་ལྟར།"]],
+gl:null}
+};
+const LANGS=[["ja","日本語"],["en","English"],["es","Español"],["fr","Français"],["de","Deutsch"],["ko","한국어"],["zh","中文"],["bo","བོད་ཡིག"]];
+let lang="ja";try{const sv=localStorage.getItem("tib-lang");if(sv&&I18N[sv])lang=sv}catch(e){}
+const L=()=>I18N[lang];
+const gl=i=>(L().gl||I18N.en.gl)[i];
+const RK={p:"pre",u:"sup",r:"root",b:"sub",v:"vow",s:"suf",t:"suf2"};
+const RKEYS=["pre","sup","root","sub","vow","suf","suf2"];
+const VOWS={"ི":"i","ུ":"u","ེ":"e","ོ":"o"};
+const FIN={"ག":"k","ང":"ng","བ":"p","མ":"m","ན":"n"};
+const P=s=>s.split(" ").map(t=>{const a=[...t];return[a[0],RK[a[2]]]});
+const RAW={"བོད":["bod","pö","ポェ","བ:r ོ:v ད:s"],"ཡུལ":["yul","yü","ユー","ཡ:r ུ:v ལ:s"],"བཀྲ":["bkra","ta","タ","བ:p ཀ:r ྲ:b","ra"],"ཤིས":["shis","shi","シ","ཤ:r ི:v ས:s"],"བདེ":["bde","de","デ","བ:p ད:r ེ:v"],"ལེགས":["legs","lek","レク","ལ:r ེ:v ག:s ས:t"],"ཐུགས":["thugs","thuk","トゥク","ཐ:r ུ:v ག:s ས:t","asp"],"རྗེ":["rje","je","ジェ","ར:u ཇ:r ེ:v"],"ཆེ":["che","che","チェ","ཆ:r ེ:v","asp"],"སྐྱིད":["skyid","kyi","キ","ས:u ཀ:r ྱ:b ི:v ད:s"],"སྙིང":["snying","nying","ニン","ས:u ཉ:r ི:v ང:s"],"ཆུ":["chu","chu","チュ","ཆ:r ུ:v","asp"],"ཉི":["nyi","nyi","ニ","ཉ:r ི:v"],"མ":["ma","ma","マ","མ:r"],"བླ":["bla","la","ラ","བ:r ླ:b"]};
+const ST=[["ཀྱ","kya","ཀ:r ྱ:b"],["ཁྱ","khya","ཁ:r ྱ:b"],["གྱ","gya","ག:r ྱ:b"],["ཀྲ","kra","ཀ:r ྲ:b","ra"],["ཁྲ","khra","ཁ:r ྲ:b","ra"],["ཀྭ","kwa","ཀ:r ྭ:b"],["རྐ","rka","ར:u ཀ:r"],["རྒ","rga","ར:u ག:r"],["སྐ","ska","ས:u ཀ:r"],["སྒ","sga","ས:u ག:r"],["སྙ","snya","ས:u ཉ:r"],["བླ","bla","བ:r ླ:b"]];
+ST.forEach(s=>{RAW[s[0]]=[s[1],s[1],"",s[2],s[3]]});
+SETS.stack=ST.map(s=>[s[0],s[1]]);
+SETS.skt=[["ཊ","ṭa"],["ཋ","ṭha"],["ཌ","ḍa"],["ཎ","ṇa"],["ཥ","ṣa"],["ཀྵ","kṣa"]];
+SETS.num="༠༡༢༣༤༥༦༧༨༩".split("").map((c,i)=>[c,String(i)]);
+SETS.vow=[["ཨི","i"],["ཨུ","u"],["ཨེ","e"],["ཨོ","o"],["ཀི","ki"],["ཀུ","ku"],["ཀེ","ke"],["ཀོ","ko"],["མི","mi"],["མུ","mu"],["མེ","me"],["མོ","mo"]];
+SETS.word=[["བོད་","bö",0],["བོད་ཡུལ།","bö yül",1],["བཀྲ་ཤིས།","tashi",2],["བཀྲ་ཤིས་བདེ་ལེགས།","tashi delek",3],["ཐུགས་རྗེ་ཆེ།","thuk-je-che",4],["ཨོཾ་མ་ཎི་པདྨེ་ཧཱུྃ།","om mani padme hum",5],["བདེ་སྐྱིད།","dekyi",6],["སྙིང་རྗེ།","nyingje",7],["ཆུ་","chu",8],["ཉི་མ་","nyi ma",9],["བླ་མ་","la ma",10]];
+const lbl=it=>it[2]!==undefined?it[1]+" ("+gl(it[2])+")":it[1];
+function disp(c){const n=c.codePointAt(0);return((n>=0x0F71&&n<=0x0F84)||(n>=0x0F90&&n<=0x0FBC))?"◌"+c:c}
+function chip(c,role){return '<span class="chip r-'+role+'"><b>'+disp(c)+'</b>'+L().ro[RKEYS.indexOf(role)]+'</span>'}
+function analyze(s){
+  if(RAW[s]){const a=RAW[s];return{w:a[0],r:a[1],k:a[2],p:P(a[3]),x:a[4]}}
+  const cs=[...s];
+  if(cs.length===2&&VOWS[cs[1]]){const b=SETS.cons.find(x=>x[0]===cs[0]);return{w:"",r:(b?b[1]:"")+VOWS[cs[1]],k:"",p:[[cs[0],"root"],[cs[1],"vow"]]}}
+  const b=SETS.cons.find(x=>x[0]===s);if(b)return{w:b[1],r:b[1],k:"",p:[[s,"root"]]};
+  return null;
+}
+function note(a){
+  const T=L(),out=[];
+  a.p.forEach(([c,r])=>{let ph;
+    if(r==="vow")ph=T.ph[3].replace("{v}",VOWS[c]);
+    else if(r==="suf")ph=FIN[c]?T.ph[4].replace("{x}",FIN[c]):T.ph[5];
+    else ph=T.ph[{pre:0,sup:0,suf2:0,root:1,sub:2}[r]];
+    out.push("<b>"+disp(c)+"</b> "+T.ro[RKEYS.indexOf(r)]+": "+ph)});
+  if(!a.p.some(x=>x[1]==="vow"))out.push(T.ph[6]);
+  if(a.x)out.push(T.ph[a.x==="asp"?7:8]);
+  return out.join("<br>");
+}
+function renderRead(){
+  const T=L(),sy=cur[0].split(/[་།]/).filter(Boolean),box=$("syls");
+  $("legend").innerHTML=RKEYS.map(k=>'<span class="chip r-'+k+'">'+T.ro[RKEYS.indexOf(k)]+'</span>').join("");
+  $("readLead").textContent=sy.length>1?T.l1.replace("{n}",sy.length):T.l2;
+  box.innerHTML="";
+  sy.forEach(s=>{
+    const a=analyze(s),d=document.createElement("div");d.className="syl";
+    d.innerHTML=!a?'<div class="big">'+s+'</div><div class="nt">'+T.un+'</div>':'<div class="big">'+s+'</div><div class="parts">'+a.p.map(x=>chip(x[0],x[1])).join("")+'</div><div class="rd">'+T.rd+": "+a.r+(lang==="ja"&&a.k?"("+a.k+")":"")+'</div>'+(a.w?'<div class="nt">'+T.wy+": "+a.w+'</div>':"")+'<div class="nt">'+note(a)+'</div>';
+    box.appendChild(d);
+  });
+}
+function applyLang(){
+  const T=L();
+  document.documentElement.lang=lang;
+  document.body.style.fontFamily=lang==="bo"?"var(--tib)":"";
+  document.querySelector("h1").lastChild.textContent=T.t;
+  document.querySelector("header p").textContent=T.s;
+  document.querySelectorAll(".tabs button").forEach(b=>b.textContent=T[{cons:"c",vow:"v",stack:"k",skt:"x",num:"n",word:"w"}[b.dataset.set]]);
+  $("undo").textContent=T.u;$("clear").textContent=T.cl;$("toggleGuide").textContent=T.g;$("toggleLine").textContent=T.l;
+  $("toggleSurface").textContent=paper?T.b:T.p;
+  document.querySelector(".tools label").firstChild.textContent=T.z+" ";
+  document.querySelector(".hint").textContent=T.h;
+  document.querySelector("#read h2").textContent=T.rt;
+  $("rules").innerHTML=T.ru.map((r,i)=>"<details"+(i<2?" open":"")+"><summary>"+r[0]+"</summary><p>"+r[1]+"</p></details>").join("");
+  buildGrid();setCur();
+}
+const ls=$("lang");ls.innerHTML=LANGS.map(l=>'<option value="'+l[0]+'">'+l[1]+'</option>').join("");ls.value=lang;
+ls.onchange=()=>{lang=ls.value;try{localStorage.setItem("tib-lang",lang)}catch(e){}applyLang()};
+const board=$('board'),gC=$('guide'),dC=$('draw'),gx=gC.getContext('2d'),dx=dC.getContext('2d');
+let cur=SETS.cons[0],setName='cons',showGuide=true,showLine=true,paper=false,size=12,history=[],dpr=1;
+const TIB='"Noto Serif Tibetan","Jomolhari","Tibetan Machine Uni","Microsoft Himalaya",serif';
+
+function buildGrid(){
+  const g=$('grid');g.innerHTML='';
+  SETS[setName].forEach(it=>{
+    const b=document.createElement('button');
+    b.className='cell'+(setName==='word'?' word':'');b.textContent=it[0];
+    b.setAttribute('aria-pressed',it===cur);b.title=lbl(it);
+    b.onclick=()=>{cur=it;history=[];buildGrid();setCur();clearDraw();drawGuide()};
+    g.appendChild(b);
+  });
+}
+function setCur(){$('cur').textContent=cur[0];$('rom').textContent=lbl(cur);renderRead()}
+function resize(){
+  dpr=window.devicePixelRatio||1;
+  const r=board.getBoundingClientRect();
+  [gC,dC].forEach(c=>{c.width=Math.round(r.width*dpr);c.height=Math.round(r.height*dpr)});
+  drawGuide();
+  history=[];
+}
+function inkColor(){return paper?'#16110E':'#F3E6C4'}
+function drawGuide(){
+  const w=gC.width,h=gC.height;gx.clearRect(0,0,w,h);
+  const lineY=h*0.3;
+  if(showLine){
+    gx.strokeStyle=paper?'rgba(140,42,51,.55)':'rgba(201,138,27,.65)';
+    gx.lineWidth=2*dpr;gx.setLineDash([]);
+    gx.beginPath();gx.moveTo(w*0.06,lineY);gx.lineTo(w*0.94,lineY);gx.stroke();
+    gx.strokeStyle=paper?'rgba(0,0,0,.12)':'rgba(255,255,255,.1)';
+    gx.lineWidth=1*dpr;gx.setLineDash([6*dpr,6*dpr]);
+    gx.beginPath();gx.moveTo(w*0.06,h*0.75);gx.lineTo(w*0.94,h*0.75);gx.stroke();gx.setLineDash([]);
+  }
+  if(showGuide){
+    const t=cur[0];
+    let fs=h*0.6;gx.font='400 '+fs+'px '+TIB;
+    const maxW=w*0.84;
+    let m=gx.measureText(t).width;
+    if(m>maxW){fs*=maxW/m;gx.font='400 '+fs+'px '+TIB}
+    gx.textAlign='center';gx.textBaseline='alphabetic';
+    gx.fillStyle=paper?'rgba(22,17,14,.16)':'rgba(243,230,196,.2)';
+    gx.fillText(t,w/2,Math.min(h*0.82,lineY+fs*0.75));
+  }
+}
+function clearDraw(){dx.clearRect(0,0,dC.width,dC.height)}
+function snap(){try{history.push(dx.getImageData(0,0,dC.width,dC.height));if(history.length>30)history.shift()}catch(e){}}
+
+let drawing=false,last=null,lastW=size,lastT=0;
+function pos(e){const r=dC.getBoundingClientRect();return{x:(e.clientX-r.left)*dpr,y:(e.clientY-r.top)*dpr,t:e.timeStamp,p:e.pressure}}
+function widthFor(p,pt){
+  let target=size*dpr;
+  if(pt.p&&pt.p>0&&pt.p!==0.5&&e_isPen)target=size*dpr*(0.4+pt.p*1.2);
+  else{
+    const dt=Math.max(1,pt.t-p.t),d=Math.hypot(pt.x-p.x,pt.y-p.y),v=d/dt/dpr;
+    target=size*dpr*Math.max(0.35,Math.min(1.25,1.3-v*0.45));
+  }
+  return lastW+(target-lastW)*0.35;
+}
+let e_isPen=false;
+dC.addEventListener('pointerdown',e=>{
+  e.preventDefault();dC.setPointerCapture(e.pointerId);
+  e_isPen=e.pointerType==='pen';
+  snap();drawing=true;last=pos(e);lastW=size*dpr*0.9;
+  dx.fillStyle=inkColor();dx.beginPath();dx.arc(last.x,last.y,lastW/2,0,Math.PI*2);dx.fill();
+});
+dC.addEventListener('pointermove',e=>{
+  if(!drawing)return;e.preventDefault();
+  const evs=e.getCoalescedEvents?e.getCoalescedEvents():[e];
+  (evs.length?evs:[e]).forEach(ev=>{
+    const pt=pos(ev);pt.t=ev.timeStamp;
+    const w=widthFor(last,pt);
+    const steps=Math.max(1,Math.ceil(Math.hypot(pt.x-last.x,pt.y-last.y)/(w*0.25)));
+    dx.fillStyle=inkColor();
+    for(let i=1;i<=steps;i++){
+      const k=i/steps,x=last.x+(pt.x-last.x)*k,y=last.y+(pt.y-last.y)*k,ww=lastW+(w-lastW)*k;
+      dx.beginPath();dx.ellipse(x,y,ww/2,ww/2*0.85,-0.6,0,Math.PI*2);dx.fill();
+    }
+    lastW=w;last=pt;
+  });
+});
+['pointerup','pointercancel'].forEach(n=>dC.addEventListener(n,()=>{drawing=false}));
+
+$('undo').onclick=()=>{const s=history.pop();clearDraw();if(s)dx.putImageData(s,0,0)};
+$('clear').onclick=()=>{snap();clearDraw()};
+$('size').oninput=e=>{size=+e.target.value};
+$('toggleGuide').onclick=e=>{showGuide=!showGuide;e.currentTarget.setAttribute('aria-pressed',showGuide);drawGuide()};
+$('toggleLine').onclick=e=>{showLine=!showLine;e.currentTarget.setAttribute('aria-pressed',showLine);drawGuide()};
+$('toggleSurface').onclick=e=>{
+  paper=!paper;e.currentTarget.setAttribute('aria-pressed',paper);
+  applyLang();
+  board.classList.toggle('paper',paper);
+  // recolor existing strokes
+  dx.globalCompositeOperation='source-in';dx.fillStyle=inkColor();dx.fillRect(0,0,dC.width,dC.height);dx.globalCompositeOperation='source-over';
+  history=[];drawGuide();
+};
+document.querySelectorAll('.tabs button').forEach(b=>b.onclick=()=>{
+  setName=b.dataset.set;cur=SETS[setName][0];
+  document.querySelectorAll('.tabs button').forEach(x=>x.setAttribute('aria-pressed',x===b));
+  history=[];clearDraw();buildGrid();setCur();drawGuide();
+});
+let rt;window.addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(()=>{const keep=dx.getImageData(0,0,dC.width,dC.height);const ow=dC.width,oh=dC.height;const tmp=document.createElement('canvas');tmp.width=ow;tmp.height=oh;tmp.getContext('2d').putImageData(keep,0,0);resize();dx.drawImage(tmp,0,0,dC.width,dC.height)},150)});
+buildGrid();setCur();resize();
+if(document.fonts&&document.fonts.ready)document.fonts.ready.then(drawGuide);
+applyLang();
+</script>
+</body>
+</html>
